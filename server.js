@@ -9,6 +9,11 @@ app.use(express.json());
 // Serve the HTML file
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Redirect root to the HTML file
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'italiano_oral_exam.html'));
+});
+
 // Proxy endpoint — keeps your API key hidden on the server
 app.post('/api/chat', async (req, res) => {
   const apiKey = process.env.ANTHROPIC_API_KEY;
