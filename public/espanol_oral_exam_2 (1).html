@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Oral Exam — Español A1-A2 (Level 2)</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #F0F7F4; color: #1A1A1A; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 24px 16px; }
+    .container { width: 100%; max-width: 720px; background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,.08); padding: 24px; }
+    h1 { font-size: 18px; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+    .subtitle { font-size: 13px; color: #666; margin-bottom: 20px; }
+    button { cursor: pointer; border: 0.5px solid #D0D0D6; background: #fff; border-radius: 8px; padding: 7px 14px; font-size: 13px; color: #1A1A1A; font-family: inherit; transition: background .15s; }
+    button:hover:not(:disabled) { background: #EDF5F1; }
+    button.primary { background: #1A7A4A; color: #fff; border-color: #1A7A4A; }
+    button.primary:hover:not(:disabled) { background: #145C38; }
+    button:disabled { opacity: .4; cursor: not-allowed; }
+    input[type=text] { border: 0.5px solid #D0D0D6; border-radius: 8px; padding: 9px 13px; font-size: 14px; font-family: inherit; background: #fff; color: #1A1A1A; outline: none; width: 100%; }
+    input:focus { border-color: #1A7A4A; box-shadow: 0 0 0 2px rgba(26,122,74,.12); }
+    .screen { padding: 4px 0; }
+    .topic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 12px; }
+    .topic-card { padding: 1.25rem 1rem; background: #fff; border: 0.5px solid #D0E8DA; border-radius: 12px; cursor: pointer; text-align: center; transition: border-color .15s, background .15s; }
+    .topic-card:hover { border-color: #1A7A4A; background: #EDF5F1; }
+    .topic-card .ti { font-size: 28px; color: #1A7A4A; display: block; margin-bottom: 8px; }
+    .topic-card h3 { font-size: 14px; font-weight: 500; margin: 0 0 4px; }
+    .topic-card p { font-size: 12px; color: #666; margin: 0; line-height: 1.4; }
+    .chat-area { display: flex; flex-direction: column; max-height: 320px; overflow-y: auto; padding: 4px 0 8px; }
+    .msg { display: flex; gap: 8px; margin-bottom: 10px; align-items: flex-start; }
+    .msg.user { flex-direction: row-reverse; }
+    .bubble { padding: 9px 13px; font-size: 13.5px; line-height: 1.65; max-width: 80%; border-radius: 4px 14px 14px 14px; }
+    .bubble.ai { background: #EDF5F1; color: #1A1A1A; }
+    .bubble.user { background: #D6EEE2; color: #0A3D22; border-radius: 14px 4px 14px 14px; }
+    .bubble.nudge { background: #FFF8E1; color: #5D3A00; border-radius: 4px 14px 14px 14px; font-size: 13px; border-left: 3px solid #F0A500; padding-left: 10px; }
+    .av { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+    .av.ai { background: #D6EEE2; color: #145C38; }
+    .av.user { background: #E6F1FB; color: #0C447C; }
+    .typing { display: inline-flex; gap: 4px; align-items: center; padding: 9px 13px; background: #EDF5F1; border-radius: 4px 14px 14px 14px; }
+    .dot { width: 5px; height: 5px; border-radius: 50%; background: #999; animation: bop 1s infinite; }
+    .dot:nth-child(2){animation-delay:.15s} .dot:nth-child(3){animation-delay:.3s}
+    @keyframes bop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+    .input-row { display: flex; gap: 8px; margin-top: 8px; }
+    .input-row input { flex: 1; }
+    .toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    .chip { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 3px 10px; border-radius: 99px; background: #D6EEE2; color: #145C38; border: 0.5px solid #8FCFAA; white-space: nowrap; }
+    .chip.warn { background: #FFF3CD; color: #7B5000; border-color: #F0C060; }
+    .chip.ok { background: #E1F5EE; color: #085041; border-color: #9FE1CB; }
+    .gram-bar { margin-top: 14px; }
+    .gram-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 6px; margin-top: 8px; }
+    .gram-item { display: flex; align-items: center; gap: 7px; font-size: 12px; padding: 5px 8px; border-radius: 8px; background: #EDF5F1; color: #666; border: 0.5px solid #D0E8DA; }
+    .gram-item.done { background: #E1F5EE; color: #085041; border-color: #9FE1CB; }
+    .progress-wrap { margin: 8px 0 10px; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 4px; }
+    .progress-track { height: 6px; background: #D0E8DA; border-radius: 3px; }
+    .progress-fill { height: 100%; border-radius: 3px; background: #1A7A4A; transition: width .4s; }
+    .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.35); border-radius: 12px; display: flex; align-items: flex-start; justify-content: center; padding-top: 16px; z-index: 10; }
+    .modal-box { background: #fff; border: 0.5px solid #D0E8DA; border-radius: 12px; padding: 1.25rem; width: 94%; max-height: 460px; overflow-y: auto; }
+    .modal-box h3 { font-size: 15px; font-weight: 500; margin: 0 0 12px; display: flex; align-items: center; justify-content: space-between; }
+    .ref-item { padding: 8px 0; border-bottom: 0.5px solid #D0E8DA; }
+    .ref-item:last-child { border-bottom: none; }
+    .ref-label { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+    .ref-example { font-size: 12.5px; color: #145C38; background: #D6EEE2; padding: 3px 8px; border-radius: 6px; display: inline-block; }
+    .ref-done { font-size: 11px; color: #085041; background: #E1F5EE; padding: 2px 7px; border-radius: 99px; margin-left: 6px; }
+    .chat-container { position: relative; }
+    .report-card { background: #fff; border: 0.5px solid #D0E8DA; border-radius: 12px; padding: 1.25rem; margin-top: 10px; }
+    .report-card h3 { font-size: 15px; font-weight: 500; margin: 0 0 10px; }
+    .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+    .stat { background: #EDF5F1; border-radius: 8px; padding: 10px; text-align: center; }
+    .stat .n { font-size: 20px; font-weight: 600; color: #1A7A4A; }
+    .stat .l { font-size: 11px; color: #666; margin-top: 2px; }
+    @media(max-width:480px){ .stat-row{grid-template-columns:repeat(2,1fr)} }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🇲🇽 Oral Exam — Español A1-A2 · Level 2</h1>
+  <p class="subtitle">Oral exam practice · Ask 5–10 questions in Spanish · Use at least 7 grammar concepts</p>
+  <div id="app"></div>
+</div>
+
+<script>
+const API_ENDPOINT = '/api/chat';
+
+const GRAMMAR = [
+  { name:"Describing Weather",               example:"Hace calor en verano. ¿Qué tiempo hace hoy? Está lloviendo mucho." },
+  { name:"Double Verb Constructions",        example:"Quiero comer pizza. Necesito estudiar. ¿Puedes venir mañana?" },
+  { name:"Months & Seasons",                 example:"Mi cumpleaños es en julio. En invierno hace frío. La primavera es bonita." },
+  { name:"Ordinal Numbers",                  example:"Vivo en el tercer piso. Es mi primera vez en México. El segundo semestre." },
+  { name:"Present Progressive",             example:"Estoy estudiando español. ¿Qué estás haciendo? Están comiendo ahora." },
+  { name:"Present Tense: ir",               example:"Voy a la universidad. ¿Adónde vas? Vamos al gimnasio los lunes." },
+  { name:"Present Tense: Irregular Verbs",  example:"Salgo a las ocho. Conozco a María. Traigo mi libro. Pongo la mesa." },
+  { name:"Present Tense: ser & estar",      example:"Soy de México. Estoy cansado. La clase es interesante. Está nublado." },
+  { name:"Stem-Changing Verbs",             example:"Puedo hablar español. Quiero ir a Puerto Rico. ¿A qué hora empieza la clase?" },
+  { name:"Saber & Conocer",                 example:"Sé hablar francés. Conozco a tu profesor. ¿Sabes dónde está la biblioteca?" }
+];
+const GRAM_NAMES = GRAMMAR.map(g => g.name);
+
+const TOPICS = [
+  { id:"personal",    icon:"ti-user",         label:"Personal Life",       sub:"Origin, likes, dislikes, daily routine…" },
+  { id:"university",  icon:"ti-school",       label:"University & Work",   sub:"Classes, teachers, schedules, careers…" },
+  { id:"family",      icon:"ti-users",        label:"Family",              sub:"Describing family members, relationships…" },
+  { id:"sports",      icon:"ti-ball-football",label:"Sports & Pastimes",   sub:"Favorite sports, hobbies, free time…" },
+  { id:"vacation",    icon:"ti-beach",        label:"Vacations",           sub:"Travel plans, destinations, activities…" }
+];
+
+const MIN_Q = 5, MAX_Q = 10, MIN_GRAM = 7;
+
+const CULTURE_NOTE = `IMPORTANT: At some point the student must make a comment IN SPANISH comparing ONE of these cultural topics to their own culture:
+- Sports & free time in Mexico or Puerto Rico
+- Vacation habits and destinations in Mexico or Puerto Rico
+- Any cultural aspect of daily life in Mexico or Puerto Rico
+If the student has not made this cultural comment by their 4th exchange, remind them IN ENGLISH: "Don't forget — before ending, make a cultural comparison in Spanish! Compare sports, free time, or vacation habits in Mexico or Puerto Rico to your own culture."`;
+
+const CULTURE_DETECT = /méxico|mexico|puerto rico|cultura|deporte|fútbol|béisbol|vacacion|tiempo libre|pasatiempo|playa|cancún|san juan|tradición|costumbre|fiesta|carnaval|verano|descanso/i;
+
+const SYSTEM = (topic, qCount) => `You are Carlos, a friendly 28-year-old man from Mexico City. You are having a casual oral practice conversation with an A1-A2 Spanish student. Topic: "${topic.label}".
+
+STRICT RULES:
+1. The student writes IN SPANISH. Always respond in simple Spanish (A1-A2 level). Keep replies 3–5 sentences.
+2. ERROR HANDLING — this is critical: If the student makes a grammar or vocabulary mistake, DO NOT correct it for them. Instead, in English, gently point out there is an error and encourage them to try again. Format: "📝 [brief English note pointing out the error type, e.g. 'Check your stem-changing verb — can you try again?']". Then continue your Spanish response naturally so the conversation flows.
+3. After your Spanish response, ask ONE short follow-up question IN SPANISH to keep the conversation going.
+4. At the very END of every response, on its own line, output ONLY this tag:
+GRAMMARTAG:{"used":["concept1","concept2"]}
+List only concepts from this list that appeared in the student's message: ${GRAM_NAMES.join(", ")}
+5. If the student writes in English, remind them IN ENGLISH: "Please write your response in Spanish!"
+6. Question count so far: ${qCount}. ${qCount >= MAX_Q ? "The student has reached 10 questions. Tell them warmly in English that the session is complete and to click 'End & Get Report'." : qCount >= MIN_Q ? `The student has asked ${qCount} questions and may end anytime.` : `The student must ask at least ${MIN_Q} questions.`}
+${CULTURE_NOTE}
+Be warm, enthusiastic, and encouraging at all times.`;
+
+let topic = null, history = [], grammarDone = new Set();
+let questionCount = 0, errorNudges = 0, hasCulture = false, showingModal = false;
+const app = document.getElementById('app');
+
+/* ── TOPIC SCREEN ── */
+function renderTopicScreen() {
+  app.innerHTML = `<div class="screen">
+    <p style="font-size:14px;font-weight:500;margin:0 0 6px">Choose a situation / Elige una situación</p>
+    <p style="font-size:13px;color:#666;margin:0 0 4px">Ask between <strong>5 and 10 questions</strong> in Spanish. Use at least <strong>7 grammar concepts</strong>.</p>
+    <p style="font-size:13px;color:#888;margin:0 0 4px">Remember to include a <strong>cultural comparison</strong> about Mexico or Puerto Rico before ending.</p>
+    <div class="topic-grid">${TOPICS.map(t => `
+      <div class="topic-card" onclick="startTopic('${t.id}')">
+        <i class="ti ${t.icon}"></i>
+        <h3>${t.label}</h3>
+        <p>${t.sub}</p>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+/* ── START TOPIC ── */
+function startTopic(id) {
+  topic = TOPICS.find(t => t.id === id);
+  history = []; grammarDone = new Set(); questionCount = 0; errorNudges = 0; hasCulture = false; showingModal = false;
+  renderChatScreen();
+  addBubble('ai', `¡Hola! Me llamo Carlos, ¡mucho gusto! 😊<br>Let's practice your Spanish — start by asking me something about <strong>${topic.label}</strong> in Spanish!`);
+}
+
+/* ── CHAT SCREEN ── */
+function renderChatScreen() {
+  const canEnd = questionCount >= MIN_Q, atMax = questionCount >= MAX_Q;
+  const pct = Math.round((questionCount / MAX_Q) * 100);
+  app.innerHTML = `
+    <div class="toolbar">
+      <span class="chip"><i class="ti ${topic.icon}"></i> ${topic.label}</span>
+      <span class="chip warn" title="Compare sports, free time, or vacations in Mexico or Puerto Rico to your own culture"><i class="ti ti-world"></i> Cultural comment required</span>
+      <span class="chip ${canEnd ? 'ok' : ''}" style="margin-left:auto"><i class="ti ti-help-circle"></i> <span id="qchip">${questionCount}/${MAX_Q} questions</span></span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Questions asked</span>
+        <span id="qlabel" style="font-weight:500;color:${canEnd ? '#0F6E56' : '#1A7A4A'}">${questionCount < MIN_Q ? (MIN_Q - questionCount) + ' more to go' : atMax ? 'Maximum reached' : 'You can end anytime'}</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="qbar" style="width:${pct}%"></div></div>
+    </div>
+    <div class="chat-container" id="chat-container">
+      <div class="chat-area" id="chat"></div>
+      <div id="tw" style="display:none;padding:4px 0 0">
+        <div class="msg"><div class="av ai">C</div><div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      </div>
+    </div>
+    <div class="input-row">
+      <input type="text" id="inp" placeholder="Write your question in Spanish… / Escribe en español…" onkeydown="if(event.key==='Enter')send()" ${atMax ? 'disabled' : ''}/>
+      <button onclick="send()" ${atMax ? 'disabled' : ''}>Send <i class="ti ti-arrow-right"></i></button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px;align-items:center;flex-wrap:wrap">
+      <button onclick="toggleGrammarRef()" style="font-size:12px"><i class="ti ti-book-2"></i> Grammar reference</button>
+      <button onclick="tryEnd()" id="endbtn" style="font-size:12px;${canEnd ? '' : 'opacity:.4;pointer-events:none'}"><i class="ti ti-flag-check"></i> End &amp; get report</button>
+      <button onclick="renderTopicScreen()" style="font-size:12px"><i class="ti ti-arrow-left"></i> Change topic</button>
+      ${!canEnd ? `<span style="font-size:12px;color:#888">Report available after 5 questions</span>` : ''}
+    </div>
+    <div class="gram-bar">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+        <span style="font-size:12px;font-weight:500;color:#666">Grammar tracker (<span id="gc">${grammarDone.size}</span>/10, need ${MIN_GRAM})</span>
+      </div>
+      <div class="gram-grid" id="gram-grid">
+        ${GRAM_NAMES.map(g => `<div class="gram-item${grammarDone.has(g) ? ' done' : ''}" id="gi-${g.replace(/[^a-z]/gi,'_')}"><i class="ti ti-${grammarDone.has(g) ? 'circle-check' : 'circle'}"></i>${g}</div>`).join('')}
+      </div>
+    </div>`;
+}
+
+/* ── GRAMMAR MODAL ── */
+function toggleGrammarRef() {
+  const container = document.getElementById('chat-container');
+  if (!container) return;
+  const existing = document.getElementById('gram-modal');
+  if (existing) { existing.remove(); showingModal = false; return; }
+  showingModal = true;
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay'; overlay.id = 'gram-modal';
+  overlay.onclick = e => { if (e.target === overlay) { overlay.remove(); showingModal = false; } };
+  const box = document.createElement('div');
+  box.className = 'modal-box';
+  box.innerHTML = `<h3>Grammar Reference
+    <button onclick="document.getElementById('gram-modal').remove()" style="background:none;border:none;cursor:pointer;padding:0;font-size:18px;color:#666"><i class="ti ti-x"></i></button>
+  </h3>
+  ${GRAMMAR.map(g => {
+    const done = grammarDone.has(g.name);
+    return `<div class="ref-item">
+      <div class="ref-label">${g.name}${done ? '<span class="ref-done"><i class="ti ti-check" style="font-size:10px"></i> used</span>' : ''}</div>
+      <span class="ref-example">${g.example}</span>
+    </div>`;
+  }).join('')}`;
+  overlay.appendChild(box);
+  container.style.position = 'relative'; container.style.minHeight = '300px';
+  container.appendChild(overlay);
+}
+
+/* ── HELPERS ── */
+function isQuestion(t) {
+  return /\?/.test(t) || /^(cómo|qué|dónde|cuándo|por qué|quién|cuánto|cuántos|cuál|tienes|eres|te|hay|haces|vives|estudias|trabajas|viene|gusta|vas|es|son|sabes|conoces|puedes|quieres)/i.test(t.trim());
+}
+
+function addBubble(type, html, isNudge) {
+  const chat = document.getElementById('chat'); if (!chat) return;
+  const d = document.createElement('div');
+  d.className = `msg${type === 'user' ? ' user' : ''}`;
+  const cls = isNudge ? 'nudge' : type;
+  d.innerHTML = `<div class="av ${type === 'user' ? 'user' : 'ai'}">${type === 'user' ? 'You' : 'C'}</div><div class="bubble ${cls}">${html.replace(/\n/g,'<br>')}</div>`;
+  chat.appendChild(d); chat.scrollTop = chat.scrollHeight;
+}
+
+function setTyping(show) {
+  const tw = document.getElementById('tw'), inp = document.getElementById('inp'), btn = document.querySelector('.input-row button');
+  if (tw) tw.style.display = show ? 'block' : 'none';
+  if (inp && questionCount < MAX_Q) inp.disabled = show;
+  if (btn && questionCount < MAX_Q) btn.disabled = show;
+}
+
+function updateGramBar(used) {
+  used.forEach(g => {
+    grammarDone.add(g);
+    const el = document.getElementById('gi-' + g.replace(/[^a-z]/gi,'_'));
+    if (el) { el.className = 'gram-item done'; el.querySelector('.ti').className = 'ti ti-circle-check'; }
+  });
+  const gc = document.getElementById('gc'); if (gc) gc.textContent = grammarDone.size;
+  if (showingModal) { const ex = document.getElementById('gram-modal'); if (ex) { ex.remove(); showingModal = false; toggleGrammarRef(); } }
+}
+
+function updateProgress() {
+  const pct = Math.round((questionCount / MAX_Q) * 100), canEnd = questionCount >= MIN_Q, atMax = questionCount >= MAX_Q;
+  const bar = document.getElementById('qbar'), chip = document.getElementById('qchip'), label = document.getElementById('qlabel');
+  const endbtn = document.getElementById('endbtn'), inp = document.getElementById('inp'), sendbtn = document.querySelector('.input-row button');
+  if (bar) bar.style.width = pct + '%';
+  if (chip) chip.textContent = questionCount + '/' + MAX_Q + ' questions';
+  if (label) { label.textContent = atMax ? 'Maximum reached' : canEnd ? 'You can end anytime' : (MIN_Q - questionCount) + ' more to go'; label.style.color = canEnd ? '#0F6E56' : '#1A7A4A'; }
+  if (endbtn) { endbtn.style.opacity = canEnd ? '1' : '.4'; endbtn.style.pointerEvents = canEnd ? 'auto' : 'none'; }
+  if (atMax) { if (inp) inp.disabled = true; if (sendbtn) sendbtn.disabled = true; }
+}
+
+function tryEnd() { if (questionCount < MIN_Q) return; endSession(); }
+
+/* ── API CALL ── */
+async function callClaude(messages, system) {
+  const body = { model: 'claude-haiku-4-5-20251001', max_tokens: 1000, messages };
+  if (system) body.system = system;
+  const res = await fetch(API_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.error?.message || `HTTP ${res.status}`);
+  }
+  const data = await res.json();
+  return data.content?.[0]?.text || '';
+}
+
+/* ── SEND MESSAGE ── */
+async function send() {
+  const inp = document.getElementById('inp'), text = inp?.value.trim();
+  if (!text || inp.disabled) return;
+  inp.value = '';
+  if (isQuestion(text)) questionCount++;
+  if (CULTURE_DETECT.test(text)) hasCulture = true;
+  addBubble('user', text);
+  history.push({ role: 'user', content: text });
+  updateProgress();
+  setTyping(true);
+  try {
+    let reply = await callClaude(history, SYSTEM(topic, questionCount));
+    const tagMatch = reply.match(/GRAMMARTAG:\{"used":\[.*?\]\}/);
+    let usedGrammar = [];
+    if (tagMatch) {
+      try { usedGrammar = JSON.parse(tagMatch[0].replace('GRAMMARTAG:', '').trim()).used || []; } catch(e) {}
+      reply = reply.replace(/GRAMMARTAG:\{"used":\[.*?\]\}/, '').trim();
+    }
+    updateGramBar(usedGrammar);
+    history.push({ role: 'assistant', content: reply });
+    setTyping(false);
+    const lines = reply.split('\n');
+    let nudgeLines = [], responseLines = [];
+    lines.forEach(line => {
+      if (/^📝/.test(line.trim())) nudgeLines.push(line.trim());
+      else responseLines.push(line);
+    });
+    if (nudgeLines.length > 0) { errorNudges++; addBubble('ai', nudgeLines.join('<br>'), true); }
+    const spanishPart = responseLines.join('\n').trim();
+    if (spanishPart) addBubble('ai', spanishPart);
+  } catch(e) {
+    setTyping(false);
+    addBubble('ai', `⚠️ Error: ${e.message}. Please try again.`);
+  }
+}
+
+/* ── END SESSION ── */
+async function endSession() {
+  setTyping(true);
+  const transcriptText = history.filter(m => m.role === 'user').map(m => m.content).join(' | ');
+  const prompt = `An A1-A2 Spanish student (Level 2) completed an oral practice session on "${topic.label}". They asked ${questionCount} questions (required: 5–10). Their Spanish messages: "${transcriptText}".
+Write a SHORT performance report IN ENGLISH for the teacher/student:
+1. Overall performance (2–3 sentences, mention question count and general fluency)
+2. Grammar strengths (2–3 specific things done well with examples from their messages)
+3. Areas to improve (2–3 grammar points with specific error examples; note that AI encouraged self-correction — ${errorNudges} error nudges were given)
+4. Grammar concepts covered: ${Array.from(grammarDone).join(', ') || 'none detected'}. Met minimum of 7? ${grammarDone.size >= MIN_GRAM ? 'YES ✓' : 'NO ✗ (' + grammarDone.size + '/7)'}
+5. Cultural comparison about Mexico or Puerto Rico: ${hasCulture ? 'Student DID include a cultural comparison — briefly evaluate its quality and relevance.' : 'Student DID NOT include a required cultural comparison — note this clearly as a missing requirement.'}
+6. Encouragement (1 warm sentence)
+Be concise, constructive, and supportive. Plain text only, no markdown.`;
+  try {
+    const reportText = await callClaude([{ role: 'user', content: prompt }]);
+    setTyping(false);
+    renderReport(reportText);
+  } catch(e) {
+    setTyping(false);
+    renderReport(`Error generating report: ${e.message}`);
+  }
+}
+
+/* ── REPORT ── */
+function renderReport(reportText) {
+  const gramList = GRAMMAR.map(g => `<div class="gram-item${grammarDone.has(g.name) ? ' done' : ''}" style="font-size:12px"><i class="ti ti-${grammarDone.has(g.name) ? 'circle-check' : 'circle'}"></i>${g.name}</div>`).join('');
+  const metMin = grammarDone.size >= MIN_GRAM, metQ = questionCount >= MIN_Q && questionCount <= MAX_Q;
+  app.innerHTML = `<div class="screen">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <span class="chip"><i class="ti ti-flag-check"></i> Session Report — ${topic.label}</span>
+      <button onclick="startTopic('${topic.id}')" style="margin-left:auto;font-size:12px"><i class="ti ti-refresh"></i> Try again</button>
+      <button onclick="renderTopicScreen()" style="font-size:12px"><i class="ti ti-arrow-left"></i> Change topic</button>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="n" style="color:${metQ?'#0F6E56':'#C0392B'}">${questionCount}</div><div class="l">Questions ${metQ?'✓':'(need 5–10)'}</div></div>
+      <div class="stat"><div class="n" style="color:${metMin?'#0F6E56':'#C0392B'}">${grammarDone.size}/10</div><div class="l">Concepts ${metMin?'✓':'(need 7)'}</div></div>
+      <div class="stat"><div class="n" style="color:${errorNudges>0?'#BA7517':'#0F6E56'}">${errorNudges}</div><div class="l">Error nudges</div></div>
+      <div class="stat"><div class="n" style="color:${hasCulture?'#0F6E56':'#C0392B'}">${hasCulture?'✓':'✗'}</div><div class="l">Cultural comment</div></div>
+    </div>
+    <div class="report-card"><h3>Performance Report</h3><p style="font-size:13.5px;line-height:1.7;white-space:pre-line;margin:0">${reportText}</p></div>
+    <div class="report-card"><h3>Grammar Tracker</h3><div class="gram-grid">${gramList}</div></div>
+  </div>`;
+}
+
+/* ── INIT ── */
+renderTopicScreen();
+</script>
+</body>
+</html>
