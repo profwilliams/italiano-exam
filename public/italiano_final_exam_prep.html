@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Italian Final Exam Prep — A1-A2</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #F7F3EF; color: #1A1A1A; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 24px 16px; }
+    .container { width: 100%; max-width: 720px; background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,.08); padding: 24px; }
+    h1 { font-size: 18px; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+    .subtitle { font-size: 13px; color: #666; margin-bottom: 20px; }
+    button { cursor: pointer; border: 0.5px solid #D0D0D6; background: #fff; border-radius: 8px; padding: 7px 14px; font-size: 13px; color: #1A1A1A; font-family: inherit; transition: background .15s; }
+    button:hover:not(:disabled) { background: #F5F0EB; }
+    button.primary { background: #2D6A9F; color: #fff; border-color: #2D6A9F; }
+    button.primary:hover:not(:disabled) { background: #1E4F7A; }
+    button:disabled { opacity: .4; cursor: not-allowed; }
+    input[type=text] { border: 0.5px solid #D0D0D6; border-radius: 8px; padding: 9px 13px; font-size: 14px; font-family: inherit; background: #fff; color: #1A1A1A; outline: none; width: 100%; }
+    input:focus { border-color: #2D6A9F; box-shadow: 0 0 0 2px rgba(45,106,159,.12); }
+    .screen { padding: 4px 0; }
+    .topic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 12px; }
+    .topic-card { padding: 1.25rem 1rem; background: #fff; border: 0.5px solid #D0DCE8; border-radius: 12px; cursor: pointer; text-align: center; transition: border-color .15s, background .15s; }
+    .topic-card:hover { border-color: #2D6A9F; background: #EEF4FA; }
+    .topic-card .ti { font-size: 28px; color: #2D6A9F; display: block; margin-bottom: 8px; }
+    .topic-card h3 { font-size: 14px; font-weight: 500; margin: 0 0 4px; }
+    .topic-card p { font-size: 12px; color: #666; margin: 0; line-height: 1.4; }
+    .chat-area { display: flex; flex-direction: column; max-height: 320px; overflow-y: auto; padding: 4px 0 8px; }
+    .msg { display: flex; gap: 8px; margin-bottom: 10px; align-items: flex-start; }
+    .msg.user { flex-direction: row-reverse; }
+    .bubble { padding: 9px 13px; font-size: 13.5px; line-height: 1.65; max-width: 80%; border-radius: 4px 14px 14px 14px; }
+    .bubble.ai { background: #EEF4FA; color: #1A1A1A; }
+    .bubble.user { background: #D6E8F7; color: #0D2E4A; border-radius: 14px 4px 14px 14px; }
+    .bubble.correction { background: #FAEEDA; color: #412402; border-radius: 4px 14px 14px 14px; font-size: 13px; border-left: 3px solid #E8A020; padding-left: 10px; }
+    .av { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+    .av.ai { background: #D6E8F7; color: #1E4F7A; }
+    .av.user { background: #E6F1FB; color: #0C447C; }
+    .typing { display: inline-flex; gap: 4px; align-items: center; padding: 9px 13px; background: #EEF4FA; border-radius: 4px 14px 14px 14px; }
+    .dot { width: 5px; height: 5px; border-radius: 50%; background: #999; animation: bop 1s infinite; }
+    .dot:nth-child(2){animation-delay:.15s} .dot:nth-child(3){animation-delay:.3s}
+    @keyframes bop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+    .input-row { display: flex; gap: 8px; margin-top: 8px; }
+    .input-row input { flex: 1; }
+    .toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    .chip { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 3px 10px; border-radius: 99px; background: #D6E8F7; color: #1E4F7A; border: 0.5px solid #8BBAD8; white-space: nowrap; }
+    .chip.warn { background: #FFF3CD; color: #7B5000; border-color: #F0C060; }
+    .chip.ok { background: #E1F5EE; color: #085041; border-color: #9FE1CB; }
+    .gram-bar { margin-top: 14px; }
+    .gram-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 6px; margin-top: 8px; }
+    .gram-item { display: flex; align-items: center; gap: 7px; font-size: 12px; padding: 5px 8px; border-radius: 8px; background: #EEF4FA; color: #666; border: 0.5px solid #D0DCE8; }
+    .gram-item.done { background: #E1F5EE; color: #085041; border-color: #9FE1CB; }
+    .progress-wrap { margin: 8px 0 10px; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 4px; }
+    .progress-track { height: 6px; background: #D0DCE8; border-radius: 3px; }
+    .progress-fill { height: 100%; border-radius: 3px; background: #2D6A9F; transition: width .4s; }
+    .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.35); border-radius: 12px; display: flex; align-items: flex-start; justify-content: center; padding-top: 16px; z-index: 10; }
+    .modal-box { background: #fff; border: 0.5px solid #D0DCE8; border-radius: 12px; padding: 1.25rem; width: 94%; max-height: 460px; overflow-y: auto; }
+    .modal-box h3 { font-size: 15px; font-weight: 500; margin: 0 0 12px; display: flex; align-items: center; justify-content: space-between; }
+    .ref-item { padding: 8px 0; border-bottom: 0.5px solid #D0DCE8; }
+    .ref-item:last-child { border-bottom: none; }
+    .ref-label { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+    .ref-example { font-size: 12.5px; color: #1E4F7A; background: #D6E8F7; padding: 3px 8px; border-radius: 6px; display: inline-block; }
+    .ref-done { font-size: 11px; color: #085041; background: #E1F5EE; padding: 2px 7px; border-radius: 99px; margin-left: 6px; }
+    .chat-container { position: relative; }
+    .report-card { background: #fff; border: 0.5px solid #D0DCE8; border-radius: 12px; padding: 1.25rem; margin-top: 10px; }
+    .report-card h3 { font-size: 15px; font-weight: 500; margin: 0 0 10px; }
+    .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+    .stat { background: #EEF4FA; border-radius: 8px; padding: 10px; text-align: center; }
+    .stat .n { font-size: 20px; font-weight: 600; color: #2D6A9F; }
+    .stat .l { font-size: 11px; color: #666; margin-top: 2px; }
+    .exam-banner { background: linear-gradient(135deg, #2D6A9F 0%, #1E4F7A 100%); color: #fff; border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; line-height: 1.6; }
+    .exam-banner strong { font-size: 14px; display: block; margin-bottom: 4px; }
+    @media(max-width:480px){ .stat-row{grid-template-columns:repeat(2,1fr)} }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🇮🇹 Italian Final Exam Prep — A1-A2</h1>
+  <p class="subtitle">Final exam practice · Ask 5–10 questions in Italian · Use at least 6 grammar concepts</p>
+  <div id="app"></div>
+</div>
+
+<script>
+const API_ENDPOINT = '/api/chat';
+
+const GRAMMAR = [
+  { name:"Descriptive Adjectives",                     example:"La mia famiglia è grande. Ho una sorella simpatica e un fratello alto." },
+  { name:"Interrogatives & Demonstratives",            example:"Che cosa fai? Questo telefono è nuovo. Quella borsa è elegante." },
+  { name:"Possessive Adjectives",                      example:"La mia famiglia, il tuo zaino, la sua professoressa, i nostri amici." },
+  { name:"Preposizioni semplici e articolate",         example:"Vado al mercato. Vengo dalla Francia. Studio nell'università. È sul tavolo." },
+  { name:"Regular -ire Verbs",                         example:"Finisco i compiti. Capisci l'italiano? Dormono fino a tardi." },
+  { name:"Verbs: conoscere & sapere",                  example:"Conosco Roma bene. Sai parlare francese? Non so dove abita." },
+  { name:"Verbs: dire, uscire, venire & disjunctive pronouns", example:"Dico sempre la verità. Esco con te. Viene da me stasera. Parla di lui." },
+  { name:"Verbs: dovere, potere & volere",             example:"Devo studiare. Posso venire domani? Voglio visitare Milano." }
+];
+const GRAM_NAMES = GRAMMAR.map(g => g.name);
+
+const TOPICS = [
+  { id:"family",     icon:"ti-users",        label:"Family",                sub:"Family members, relationships, traditions…" },
+  { id:"technology", icon:"ti-device-laptop", label:"Technology & Fashion",  sub:"Gadgets, social media, Italian style…" }
+];
+
+const MIN_Q = 5, MAX_Q = 10, MIN_GRAM = 6;
+
+const CULTURE_NOTE = `IMPORTANT: At some point the student must make a comment IN ITALIAN comparing ONE of these cultural topics to their own culture:
+- Italian family life and traditions (mealtimes, family roles, holidays)
+- Technology use in Italy (social media habits, digital lifestyle)
+- Fashion in Italy (Italian brands, style, importance of appearance)
+If the student has not made this cultural comment by their 4th exchange, remind them gently IN ENGLISH: "Don't forget — before ending, make a cultural comparison in Italian! You can compare Italian family traditions, technology habits, or fashion to your own culture."`;
+
+const CULTURE_DETECT = /famiglia|tradizione|moda|tecnologia|social|instagram|marca|stilista|abbigliamento|pranzo|cena|domenica|italia|italiano|usanza|abitudine|festività|natale|pasqua|telefono|internet/i;
+
+const SYSTEM = (topic, qCount) => `You are Marco, a friendly 30-year-old Italian man from Florence. You are having a casual oral practice conversation to help an A1-A2 Italian student prepare for their final exam. Topic: "${topic.label}".
+
+STRICT RULES:
+1. The student writes IN ITALIAN. Always respond in simple Italian (A1-A2 level). Keep replies 3–5 sentences.
+2. GRAMMAR CORRECTION: If the student makes a grammar or vocabulary error, FIRST write one short correction note IN ENGLISH starting with "📝 Correction hint:", pointing out the error type and encouraging them to self-correct (do NOT give the answer). Then respond naturally in Italian so the conversation flows.
+3. After your Italian response, ask ONE short follow-up question IN ITALIAN to keep the conversation going.
+4. At the very END of every response, on its own line, output ONLY this tag:
+GRAMMARTAG:{"used":["concept1","concept2"]}
+List only concepts from this list that appeared in the student's message: ${GRAM_NAMES.join(", ")}
+5. If the student writes in English or Spanish, remind them IN ENGLISH: "Please write in Italian for your exam practice!"
+6. Question count so far: ${qCount}. ${qCount >= MAX_Q ? "The student has reached 10 questions. Tell them warmly in English that the session is complete and to click 'End & Get Report'." : qCount >= MIN_Q ? `The student has asked ${qCount} questions and may end anytime.` : `The student must ask at least ${MIN_Q} questions.`}
+${CULTURE_NOTE}
+Be warm, encouraging, and patient — this is exam preparation, so be extra supportive!`;
+
+let topic = null, history = [], grammarDone = new Set();
+let questionCount = 0, corrections = 0, hasCulture = false, showingModal = false;
+const app = document.getElementById('app');
+
+/* ── TOPIC SCREEN ── */
+function renderTopicScreen() {
+  app.innerHTML = `<div class="screen">
+    <div class="exam-banner">
+      <strong>🎓 Final Exam Preparation</strong>
+      Practice your Italian with Marco before your final exam. Choose a topic, ask 5–10 questions, use at least 6 grammar concepts, and make one cultural comparison in Italian.
+    </div>
+    <p style="font-size:14px;font-weight:500;margin:0 0 6px">Choose a topic / Scegli un argomento</p>
+    <div class="topic-grid">${TOPICS.map(t => `
+      <div class="topic-card" onclick="startTopic('${t.id}')">
+        <i class="ti ${t.icon}"></i>
+        <h3>${t.label}</h3>
+        <p>${t.sub}</p>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+/* ── START TOPIC ── */
+function startTopic(id) {
+  topic = TOPICS.find(t => t.id === id);
+  history = []; grammarDone = new Set(); questionCount = 0; corrections = 0; hasCulture = false; showingModal = false;
+  renderChatScreen();
+  addBubble('ai', `Ciao! Sono Marco, piacere di conoscerti! 😊<br>Let's get you ready for your final exam — start by asking me something in Italian about <strong>${topic.label}</strong>!`);
+}
+
+/* ── CHAT SCREEN ── */
+function renderChatScreen() {
+  const canEnd = questionCount >= MIN_Q, atMax = questionCount >= MAX_Q;
+  const pct = Math.round((questionCount / MAX_Q) * 100);
+  app.innerHTML = `
+    <div class="toolbar">
+      <span class="chip"><i class="ti ${topic.icon}"></i> ${topic.label}</span>
+      <span class="chip warn" title="Compare Italian family traditions, technology, or fashion to your own culture"><i class="ti ti-world"></i> Cultural comment required</span>
+      <span class="chip ${canEnd ? 'ok' : ''}" style="margin-left:auto"><i class="ti ti-help-circle"></i> <span id="qchip">${questionCount}/${MAX_Q} questions</span></span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Questions asked</span>
+        <span id="qlabel" style="font-weight:500;color:${canEnd ? '#0F6E56' : '#2D6A9F'}">${questionCount < MIN_Q ? (MIN_Q - questionCount) + ' more to go' : atMax ? 'Maximum reached' : 'You can end anytime'}</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="qbar" style="width:${pct}%"></div></div>
+    </div>
+    <div class="chat-container" id="chat-container">
+      <div class="chat-area" id="chat"></div>
+      <div id="tw" style="display:none;padding:4px 0 0">
+        <div class="msg"><div class="av ai">M</div><div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      </div>
+    </div>
+    <div class="input-row">
+      <input type="text" id="inp" placeholder="Scrivi in italiano… / Write in Italian…" onkeydown="if(event.key==='Enter')send()" ${atMax ? 'disabled' : ''}/>
+      <button onclick="send()" ${atMax ? 'disabled' : ''}>Invia <i class="ti ti-arrow-right"></i></button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px;align-items:center;flex-wrap:wrap">
+      <button onclick="toggleGrammarRef()" style="font-size:12px"><i class="ti ti-book-2"></i> Grammar reference</button>
+      <button onclick="tryEnd()" id="endbtn" style="font-size:12px;${canEnd ? '' : 'opacity:.4;pointer-events:none'}"><i class="ti ti-flag-check"></i> End &amp; get report</button>
+      <button onclick="renderTopicScreen()" style="font-size:12px"><i class="ti ti-arrow-left"></i> Change topic</button>
+      ${!canEnd ? `<span style="font-size:12px;color:#888">Report available after 5 questions</span>` : ''}
+    </div>
+    <div class="gram-bar">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+        <span style="font-size:12px;font-weight:500;color:#666">Grammar tracker (<span id="gc">${grammarDone.size}</span>/8, need ${MIN_GRAM})</span>
+      </div>
+      <div class="gram-grid" id="gram-grid">
+        ${GRAM_NAMES.map(g => `<div class="gram-item${grammarDone.has(g) ? ' done' : ''}" id="gi-${g.replace(/[^a-z]/gi,'_')}"><i class="ti ti-${grammarDone.has(g) ? 'circle-check' : 'circle'}"></i>${g}</div>`).join('')}
+      </div>
+    </div>`;
+}
+
+/* ── GRAMMAR MODAL ── */
+function toggleGrammarRef() {
+  const container = document.getElementById('chat-container');
+  if (!container) return;
+  const existing = document.getElementById('gram-modal');
+  if (existing) { existing.remove(); showingModal = false; return; }
+  showingModal = true;
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay'; overlay.id = 'gram-modal';
+  overlay.onclick = e => { if (e.target === overlay) { overlay.remove(); showingModal = false; } };
+  const box = document.createElement('div');
+  box.className = 'modal-box';
+  box.innerHTML = `<h3>Grammar Reference
+    <button onclick="document.getElementById('gram-modal').remove()" style="background:none;border:none;cursor:pointer;padding:0;font-size:18px;color:#666"><i class="ti ti-x"></i></button>
+  </h3>
+  ${GRAMMAR.map(g => {
+    const done = grammarDone.has(g.name);
+    return `<div class="ref-item">
+      <div class="ref-label">${g.name}${done ? '<span class="ref-done"><i class="ti ti-check" style="font-size:10px"></i> used</span>' : ''}</div>
+      <span class="ref-example">${g.example}</span>
+    </div>`;
+  }).join('')}`;
+  overlay.appendChild(box);
+  container.style.position = 'relative'; container.style.minHeight = '300px';
+  container.appendChild(overlay);
+}
+
+/* ── HELPERS ── */
+function isQuestion(t) {
+  return /\?/.test(t) || /^(come|cosa|dove|quando|perché|chi|quanto|quanti|qual|hai|sei|ti|ha|fa|stai|abiti|lavori|studi|piace|va|fai|sai|conosci|puoi|vuoi|devi|esci|vieni)/i.test(t.trim());
+}
+
+function addBubble(type, html, isCorrectionMsg) {
+  const chat = document.getElementById('chat'); if (!chat) return;
+  const d = document.createElement('div');
+  d.className = `msg${type === 'user' ? ' user' : ''}`;
+  const cls = isCorrectionMsg ? 'correction' : type;
+  d.innerHTML = `<div class="av ${type === 'user' ? 'user' : 'ai'}">${type === 'user' ? 'Tu' : 'M'}</div><div class="bubble ${cls}">${html.replace(/\n/g,'<br>')}</div>`;
+  chat.appendChild(d); chat.scrollTop = chat.scrollHeight;
+}
+
+function setTyping(show) {
+  const tw = document.getElementById('tw'), inp = document.getElementById('inp'), btn = document.querySelector('.input-row button');
+  if (tw) tw.style.display = show ? 'block' : 'none';
+  if (inp && questionCount < MAX_Q) inp.disabled = show;
+  if (btn && questionCount < MAX_Q) btn.disabled = show;
+}
+
+function updateGramBar(used) {
+  used.forEach(g => {
+    grammarDone.add(g);
+    const el = document.getElementById('gi-' + g.replace(/[^a-z]/gi,'_'));
+    if (el) { el.className = 'gram-item done'; el.querySelector('.ti').className = 'ti ti-circle-check'; }
+  });
+  const gc = document.getElementById('gc'); if (gc) gc.textContent = grammarDone.size;
+  if (showingModal) { const ex = document.getElementById('gram-modal'); if (ex) { ex.remove(); showingModal = false; toggleGrammarRef(); } }
+}
+
+function updateProgress() {
+  const pct = Math.round((questionCount / MAX_Q) * 100), canEnd = questionCount >= MIN_Q, atMax = questionCount >= MAX_Q;
+  const bar = document.getElementById('qbar'), chip = document.getElementById('qchip'), label = document.getElementById('qlabel');
+  const endbtn = document.getElementById('endbtn'), inp = document.getElementById('inp'), sendbtn = document.querySelector('.input-row button');
+  if (bar) bar.style.width = pct + '%';
+  if (chip) chip.textContent = questionCount + '/' + MAX_Q + ' questions';
+  if (label) { label.textContent = atMax ? 'Maximum reached' : canEnd ? 'You can end anytime' : (MIN_Q - questionCount) + ' more to go'; label.style.color = canEnd ? '#0F6E56' : '#2D6A9F'; }
+  if (endbtn) { endbtn.style.opacity = canEnd ? '1' : '.4'; endbtn.style.pointerEvents = canEnd ? 'auto' : 'none'; }
+  if (atMax) { if (inp) inp.disabled = true; if (sendbtn) sendbtn.disabled = true; }
+}
+
+function tryEnd() { if (questionCount < MIN_Q) return; endSession(); }
+
+/* ── API CALL ── */
+async function callClaude(messages, system) {
+  const body = { model: 'claude-haiku-4-5-20251001', max_tokens: 1000, messages };
+  if (system) body.system = system;
+  const res = await fetch(API_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.error?.message || `HTTP ${res.status}`);
+  }
+  const data = await res.json();
+  return data.content?.[0]?.text || '';
+}
+
+/* ── SEND MESSAGE ── */
+async function send() {
+  const inp = document.getElementById('inp'), text = inp?.value.trim();
+  if (!text || inp.disabled) return;
+  inp.value = '';
+  if (isQuestion(text)) questionCount++;
+  if (CULTURE_DETECT.test(text)) hasCulture = true;
+  addBubble('user', text);
+  history.push({ role: 'user', content: text });
+  updateProgress();
+  setTyping(true);
+  try {
+    let reply = await callClaude(history, SYSTEM(topic, questionCount));
+    const tagMatch = reply.match(/GRAMMARTAG:\{"used":\[.*?\]\}/);
+    let usedGrammar = [];
+    if (tagMatch) {
+      try { usedGrammar = JSON.parse(tagMatch[0].replace('GRAMMARTAG:', '').trim()).used || []; } catch(e) {}
+      reply = reply.replace(/GRAMMARTAG:\{"used":\[.*?\]\}/, '').trim();
+    }
+    updateGramBar(usedGrammar);
+    history.push({ role: 'assistant', content: reply });
+    setTyping(false);
+    const lines = reply.split('\n');
+    let correctionLines = [], responseLines = [];
+    lines.forEach(line => {
+      if (/^📝/.test(line.trim())) correctionLines.push(line.trim());
+      else responseLines.push(line);
+    });
+    if (correctionLines.length > 0) { corrections++; addBubble('ai', correctionLines.join('<br>'), true); }
+    const italianPart = responseLines.join('\n').trim();
+    if (italianPart) addBubble('ai', italianPart);
+  } catch(e) {
+    setTyping(false);
+    addBubble('ai', `⚠️ Error: ${e.message}. Please try again.`);
+  }
+}
+
+/* ── END SESSION ── */
+async function endSession() {
+  setTyping(true);
+  const transcriptText = history.filter(m => m.role === 'user').map(m => m.content).join(' | ');
+  const prompt = `An A1-A2 Italian student did a final exam preparation session on "${topic.label}". They asked ${questionCount} questions (required: 5–10). Their Italian messages: "${transcriptText}".
+Write a SHORT performance report IN ENGLISH for the student:
+1. Overall performance (2–3 sentences, mention question count and exam readiness)
+2. Grammar strengths (2–3 specific things done well with examples from their messages)
+3. Areas to review before the exam (2–3 grammar points with specific error examples; note that ${corrections} correction hints were given encouraging self-correction)
+4. Grammar concepts covered: ${Array.from(grammarDone).join(', ') || 'none detected'}. Met minimum of 6? ${grammarDone.size >= MIN_GRAM ? 'YES ✓' : 'NO ✗ (' + grammarDone.size + '/6 — review missing concepts before the exam)'}
+5. Cultural comparison about Italian family life, technology, or fashion: ${hasCulture ? 'Student DID include a cultural comparison — briefly evaluate its quality.' : 'Student DID NOT include a required cultural comparison — remind them to practice this before the exam.'}
+6. Final exam tip (1 specific, actionable tip for the exam)
+Be encouraging, constructive, and exam-focused. Plain text only, no markdown.`;
+  try {
+    const reportText = await callClaude([{ role: 'user', content: prompt }]);
+    setTyping(false);
+    renderReport(reportText);
+  } catch(e) {
+    setTyping(false);
+    renderReport(`Error generating report: ${e.message}`);
+  }
+}
+
+/* ── REPORT ── */
+function renderReport(reportText) {
+  const gramList = GRAMMAR.map(g => `<div class="gram-item${grammarDone.has(g.name) ? ' done' : ''}" style="font-size:12px"><i class="ti ti-${grammarDone.has(g.name) ? 'circle-check' : 'circle'}"></i>${g.name}</div>`).join('');
+  const metMin = grammarDone.size >= MIN_GRAM, metQ = questionCount >= MIN_Q && questionCount <= MAX_Q;
+  app.innerHTML = `<div class="screen">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <span class="chip"><i class="ti ti-flag-check"></i> Exam Prep Report — ${topic.label}</span>
+      <button onclick="startTopic('${topic.id}')" style="margin-left:auto;font-size:12px"><i class="ti ti-refresh"></i> Practice again</button>
+      <button onclick="renderTopicScreen()" style="font-size:12px"><i class="ti ti-arrow-left"></i> Change topic</button>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="n" style="color:${metQ?'#0F6E56':'#C0392B'}">${questionCount}</div><div class="l">Questions ${metQ?'✓':'(need 5–10)'}</div></div>
+      <div class="stat"><div class="n" style="color:${metMin?'#0F6E56':'#C0392B'}">${grammarDone.size}/8</div><div class="l">Concepts ${metMin?'✓':'(need 6)'}</div></div>
+      <div class="stat"><div class="n" style="color:${corrections>0?'#BA7517':'#0F6E56'}">${corrections}</div><div class="l">Correction hints</div></div>
+      <div class="stat"><div class="n" style="color:${hasCulture?'#0F6E56':'#C0392B'}">${hasCulture?'✓':'✗'}</div><div class="l">Cultural comment</div></div>
+    </div>
+    <div class="report-card"><h3>📋 Exam Readiness Report</h3><p style="font-size:13.5px;line-height:1.7;white-space:pre-line;margin:0">${reportText}</p></div>
+    <div class="report-card"><h3>Grammar Tracker</h3><div class="gram-grid">${gramList}</div></div>
+  </div>`;
+}
+
+/* ── INIT ── */
+renderTopicScreen();
+</script>
+</body>
+</html>
