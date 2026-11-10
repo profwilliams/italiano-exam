@@ -261,7 +261,7 @@ function tryEnd() { if (questionCount < MIN_Q) return; endSession(); }
 
 /* ── API CALL — goes to your server, never exposes the key ── */
 async function callClaude(messages, system) {
-  const body = { model: 'claude-haiku-5-5', max_tokens: 1000, messages };
+  const body = { model: 'claude-haiku-4-5-20251001', max_tokens: 1000, messages };
   if (system) body.system = system;
   const res = await fetch(API_ENDPOINT, {
     method: 'POST',
@@ -273,7 +273,7 @@ async function callClaude(messages, system) {
     throw new Error(err?.error?.message || `HTTP ${res.status}`);
   }
   const data = await res.json();
-  return data.content?.[0]?.text || '';
+  return data.content?.find(b => b.type === 'text')?.text || '';
 }
 
 /* ── SEND MESSAGE ── */
