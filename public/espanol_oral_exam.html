@@ -45,6 +45,10 @@
     @keyframes bop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
     .input-row { display: flex; gap: 8px; margin-top: 8px; }
     .input-row input { flex: 1; }
+    .mic-btn { background: #fff; border: 0.5px solid #D0D0D6; border-radius: 8px; padding: 7px 12px; cursor: pointer; font-size: 16px; transition: background .15s; flex-shrink: 0; }
+    .mic-btn:hover { background: #F2F2F5; }
+    .mic-btn.listening { background: #FAEAEA; border-color: #E05050; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
     .toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
     .chip { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 3px 10px; border-radius: 99px; background: #FDECEA; color: #96281B; border: 0.5px solid #F0A99E; white-space: nowrap; }
     .chip.warn { background: #FFF3CD; color: #7B5000; border-color: #F0C060; }
@@ -155,6 +159,7 @@ function startTopic(id) {
   history = []; grammarDone = new Set(); questionCount = 0; errorNudges = 0; hasCulture = false; showingModal = false;
   renderChatScreen();
   addBubble('ai', `¡Hola! Me llamo Sofía, ¡mucho gusto! 😊<br>Let's practice your Spanish — start by asking me something about <strong>${topic.label}</strong> in Spanish!`);
+  setTimeout(() => speak(`¡Hola! Me llamo Sofía, ¡mucho gusto! Empieza preguntándome algo sobre ${topic.label} en español.`), 500);
 }
 
 /* ── CHAT SCREEN ── */
@@ -182,6 +187,7 @@ function renderChatScreen() {
     </div>
     <div class="input-row">
       <input type="text" id="inp" placeholder="Write your question in Spanish… / Escribe en español…" onkeydown="if(event.key==='Enter')send()" ${atMax ? 'disabled' : ''}/>
+      <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Habla en español">🎤</button>
       <button onclick="send()" ${atMax ? 'disabled' : ''}>Send <i class="ti ti-arrow-right"></i></button>
     </div>
     <div style="display:flex;gap:8px;margin-top:8px;align-items:center;flex-wrap:wrap">
@@ -323,7 +329,7 @@ async function send() {
       addBubble('ai', nudgeLines.join('<br>'), true);
     }
     const spanishPart = responseLines.join('\n').trim();
-    if (spanishPart) addBubble('ai', spanishPart);
+    if (spanishPart) { addBubble('ai', spanishPart); speak(spanishPart); }
   } catch(e) {
     setTyping(false);
     addBubble('ai', `⚠️ Error: ${e.message}. Please try again.`);
@@ -376,6 +382,45 @@ function renderReport(reportText) {
 
 /* ── INIT ── */
 renderTopicScreen();
+
+// Text-to-speech
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const clean = text.replace(/<[^>]+>/g, '').replace(/GRAMMARTAG:[^\n]*/g, '').replace(/📝[^\n]*/g, '').trim();
+  if (!clean) return;
+  const utt = new SpeechSynthesisUtterance(clean);
+  utt.lang = 'es-ES';
+  utt.rate = 0.9;
+  const voices = window.speechSynthesis.getVoices();
+  const esVoice = voices.find(v => v.lang.startsWith('es'));
+  if (esVoice) utt.voice = esVoice;
+  window.speechSynthesis.speak(utt);
+}
+window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+
+// Voice input
+let recognition = null;
+function toggleMic() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) { alert('Tu navegador no soporta reconocimiento de voz. Prueba Chrome.'); return; }
+  const btn = document.getElementById('micBtn');
+  if (recognition) { recognition.stop(); recognition = null; btn.classList.remove('listening'); btn.textContent = '🎤'; return; }
+  recognition = new SpeechRecognition();
+  recognition.lang = 'es-ES';
+  recognition.interimResults = false;
+  recognition.continuous = false;
+  btn.classList.add('listening'); btn.textContent = '⏹️';
+  recognition.onresult = e => {
+    const transcript = e.results[0][0].transcript;
+    document.getElementById('inp').value = transcript;
+    recognition = null; btn.classList.remove('listening'); btn.textContent = '🎤';
+    send();
+  };
+  recognition.onerror = () => { recognition = null; btn.classList.remove('listening'); btn.textContent = '🎤'; };
+  recognition.onend = () => { recognition = null; btn.classList.remove('listening'); btn.textContent = '🎤'; };
+  recognition.start();
+}
 </script>
 </body>
 </html>
